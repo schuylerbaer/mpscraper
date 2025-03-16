@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css">
+		<title>Mountain Project Shoe Finder</title>
+	</head>
+	<body>
+		<div id="app" :class="currentPage">
+            <nav v-if="currentPage !== 'login' && currentPage !== 'signup'">
+                <button @click="loadTrackersFromAPI">Dashboard</button>
+                <button @click="goToProfile">Profile</button>
+                <button @click="logOut">Logout</button>
+            </nav>
+
+            <div class="content-container">
+                <div v-if="currentPage === 'login'" class="login-container">
+                    <h1>Login</h1>
+                    <input type="text" v-model="username" placeholder="Username" :class="{ error: hasError('email') }">
+                    <input type="password" v-model="plainPassword" placeholder="Password" :class="{ error: hasError('plainPassword') }">
+                    <button @click="logIn">Log In</button>
+                    <p v-if="signUpSuccess === true">Sign up successful. Please log in.</p>
+                    <p>Don't have an account?</p>
+                    <button @click="goToSignUp">Sign Up</button>
+                    <ul>
+                        <li v-for="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="currentPage === 'signup'" class="signup-container">
+                    <h1>Sign Up</h1>
+                    <input type="text" v-model="newEmail" placeholder="Email" :class="{ error: hasError('newEmail') }">
+                    <input type="text" v-model="newUsername" placeholder="Username" :class="{ error: hasError('newUsername') }">
+                    <input type="password" v-model="newPassword" placeholder="Password" :class="{ error: hasError('newPassword') }">
+                    <input type="password" v-model="confirmPassword" placeholder="Confirm Password" :class="{ error: hasError('confirmPassword') }">
+                    <button @click="signUp">Sign Up</button>
+                    <button @click="signUpCancel">Cancel</button>
+                    <ul>
+                        <li v-for="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="currentPage === 'dashboard'" class="dashboard-container">
+                    <h1>Dashboard</h1>
+                    <button @click="currentPage = 'addTracker'">Add Tracker</button>
+                    <ul>
+                        <li v-for="tracker in trackers" :class="{ 'tracker-disabled': !tracker.isActive }">
+                            <div class="tracker-name">
+                                <strong>
+                                {{ tracker.brand }}<br>
+                                {{ tracker.model }}<br>
+                                {{ tracker.size }}
+                                </strong>
+                            </div>
+                            <div class="tracker-buttons">
+                                <button @click="toggleTracker(tracker)">
+                                    {{ tracker.isActive ? 'Disable' : 'Enable' }}
+                                </button>
+                                <button @click="editPage(tracker)">Edit</button>
+                                <button @click="deleteTracker(tracker)">Delete</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="currentPage === 'addTracker'" class="addTracker-container">
+                    <h1 v-if="editMode === false">Create Tracker</h1>
+                    <h1 v-if="editMode === true">Edit Tracker</h1>
+                    <input type="text" v-model="newBrand" placeholder="Brand" :class="{ error: hasError('newBrand') }">
+                    <input type="text" v-model="newModel" placeholder="Model" :class="{ error: hasError('newModel') }">
+                    <input type="text" v-model="newSize" placeholder="Size" :class="{ error: hasError('newSize') }">
+                    <button v-if="editMode === false" @click="addTracker">Create</button>
+                    <button v-if="editMode === true" @click="editTracker">Save</button>
+                    <button @click="cancelEdit">Cancel</button>
+                    <ul>
+                        <li v-for="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="currentPage === 'profile'" class="profile-container">
+                    <h1>Profile</h1>
+                    <div v-if="!editEmailMode && !editUsernameMode && !editPasswordMode">
+                        <p>Email: {{ profile.email }}</p>
+                        <p>Username: {{ profile.username }}</p>
+                        <p>Password: ********</p>
+                        <button @click="toggleEditEmailMode">Edit Email</button><br>
+                        <button @click="toggleEditUsernameMode">Edit Username</button><br>
+                        <button @click="toggleEditPasswordMode">Edit Password</button>
+                    </div>
+                    <div v-if="editEmailMode">
+                        <label for="email">{{ profile.email }}</label>
+                        <input type="email" id="email" v-model="profile.email" :class="{ error: hasError('newEmail') }">
+                        <button @click="saveProfile">Save Changes</button><br>
+                        <button @click="goToProfile">Cancel</button>
+                        <ul>
+                            <li v-for="error in errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div v-if="editUsernameMode">
+                        <label for="username">{{ profile.username }}</label>
+                        <input type="text" id="username" v-model="profile.username" :class="{ error: hasError('newUsername') }">
+                        <button @click="saveProfile">Save Changes</button><br>
+                        <button @click="goToProfile">Cancel</button>
+                        <ul>
+                            <li v-for="error in errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div v-if="editPasswordMode">
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" v-model="profile.password" :class="{ error: hasError('newPassword') }">
+
+                        <label for="password">Confirm Password:</label>
+                        <input type="password" id="password" v-model="profile.confirmPW" :class="{ error: hasError('confirmPassword') }">
+                        <button @click="saveProfile">Save Changes</button><br>
+                        <button @click="goToProfile">Cancel</button>
+                        <ul>
+                            <li v-for="error in errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+		</div>
+
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>

@@ -1,0 +1,145 @@
+body {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    margin: 0;
+    justify-content: center;
+    background-color: #f4f4f4;
+}
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input.error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+nav {
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.content-container {
+    width: 100vw;
+}
+
+.dashboard-container, .profile-container, .addTracker-container, .login-container, .signup-container {
+    width: 66vw;
+    margin: auto;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border: rgba(0, 0, 0, 0.1) solid;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+h1 {
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #333;
+}
+
+input {
+    display: block;
+    width: 40%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 420px;
+    padding: 10px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px auto;
+}
+
+button:hover {
+    background-color: #ff4757;
+}
+
+p {
+    margin: 10px auto;
+    width: 50%;
+    padding: 0 10px;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+ul li {
+    color: red;
+}
+
+nav button {
+    width: 100px;
+    height: 40px;
+    margin: 10px 0;
+    margin-top: 30px;
+}
+
+.dashboard-container ul li {
+    color: #333;
+    border: rgba(0, 0, 0, 0.1) solid;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    margin: auto;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 60%;
+}
+
+.dashboard-container button {
+    width: 40%;
+}
+
+.tracker-name {
+    margin: auto;
+}
+
+.tracker-buttons {
+    width: 60%;
+}
+
+.tracker-buttons button {
+    width: 60%;
+}
+
+.tracker-disabled {
+    opacity: 0.5;
+}
+
+.login-container, .signup-container {
+    margin-top: 100px;
+}
