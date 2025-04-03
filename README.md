@@ -1,6 +1,6 @@
 # Mountain Project For Sale Scraper
 
-New climbing shoes are expensive. I buy most of my shoes used on the forum section of Mountain Project, a rock climbing route database. Instead of manually checking the forum for the shoes I want, I decided to make this web scraper along with a web app for easy use.
+New climbing shoes are expensive. I buy most of my shoes used on the forum section of Mountain Project, a rock climbing route database. Instead of manually checking the forum for the shoes I want, I decided to make this web scraper along with a web app for easy use. I am going to add the web scraper soon - right now this is just an interface that will be used to interact with the scraper once it is built.
 
 ## Getting started
 
